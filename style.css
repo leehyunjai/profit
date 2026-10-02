@@ -1,0 +1,134 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+/* 웹 버전(src/index.css)과 같은 디자인 토큰 — 대비는 WCAG AA 이상 */
+:root {
+  --canvas: #f6f8fb;
+  --surface: #ffffff;
+  --ink: #0f172a;
+  --ink-soft: #334155;
+  --muted: #526075;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+  --primary: #1d4ed8;
+  --primary-soft: #eff4ff;
+  --row-total: #1e293b;
+  --row-division: #e2e8f0;
+  --row-product: #f1f5f9;
+  --negative: #b91c1c;
+  --negative-on-dark: #fca5a5;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --reviewed: #166534;
+  --reviewed-soft: #effcf3;
+  --review: #9a3412;
+  --review-soft: #ffedd5;
+}
+
+/* ---------- 페이지 ---------- */
+header[data-testid="stHeader"] { display: none; }
+.block-container { padding: 1.25rem 1.5rem 5rem; max-width: 1440px; }
+.stMarkdown p { margin: 0; }
+/* Streamlit 마크다운의 음수 하단 여백(-1rem) 때문에 행 안의 숫자가 아래로 밀린다 */
+[data-testid="stMarkdownContainer"] { margin-bottom: 0 !important; }
+
+.st-key-app-header { padding-bottom: 0.75rem; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand .logo {
+  display: grid; place-items: center; width: 36px; height: 36px;
+  border-radius: 8px; background: var(--primary); font-size: 18px;
+}
+.brand h1 { font-size: 18px !important; font-weight: 700 !important; line-height: 1.2 !important; padding: 0 !important; margin: 0 !important; color: var(--ink); }
+.brand p { font-size: 12px; color: var(--muted); margin: 0; }
+.st-key-month-nav [data-testid="stHorizontalBlock"] { gap: 4px; }
+
+.page-title { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; }
+.page-title h2 { font-size: 20px !important; font-weight: 700 !important; padding: 0 !important; margin: 0 !important; color: var(--ink); }
+.page-title > span { font-size: 12px; color: var(--muted); }
+
+/* ---------- 요약 카드 ---------- */
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1023px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04); }
+.card-label { font-size: 14px; font-weight: 500; color: var(--muted); }
+.card-value { container-type: inline-size; display: flex; align-items: baseline; gap: 6px; height: 28px; margin-top: 8px; }
+.card-value > span:first-child { font-weight: 700; letter-spacing: -0.01em; line-height: 28px; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink); }
+.card-value .unit { flex-shrink: 0; font-size: 14px; color: var(--muted); white-space: nowrap; }
+.card-detail { margin-top: 12px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.neg { color: var(--negative) !important; }
+.empty { color: var(--muted) !important; }
+
+/* ---------- 도구 모음 + 손익표 (한 카드) ---------- */
+.st-key-pnl-section { gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: clip; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04); }
+.st-key-toolbar { padding: 6px 16px; border-bottom: 1px solid var(--line); }
+.progress { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.progress .bar { width: 144px; height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.progress .bar > div { height: 100%; border-radius: 999px; background: var(--reviewed); transition: width 0.3s; }
+.st-key-bulk-delete button { color: var(--negative); border-color: var(--line-strong); }
+
+.st-key-pnl-table { gap: 0; }
+[class*="st-key-row-"] { gap: 0; padding: 0 12px; border-bottom: 1px solid var(--line); min-height: 42px; justify-content: center; }
+[class*="st-key-row-"] [data-testid="stHorizontalBlock"] { gap: 8px; }
+[class*="st-key-row-"] [data-testid="stCheckbox"] label { min-height: 0; padding: 0; }
+/* Streamlit 기본 체크박스 테두리(약 1.5:1)는 WCAG 비텍스트 대비 3:1 미달 → 진하게 */
+[data-testid="stCheckbox"] label:has(input:not(:checked)) > span:first-child { border-color: #64748b !important; }
+
+/* 헤더 행: 스크롤해도 위에 고정. Streamlit이 키 컨테이너를 stLayoutWrapper로 한 번 더 감싸므로
+   sticky는 그 래퍼에 건다 (헤더 자체에 걸면 래퍼 높이 안에서만 고정됨) */
+.st-key-pnl-table > [data-testid="stLayoutWrapper"]:has(> .st-key-row-header) { position: sticky; top: 0; z-index: 5; }
+.st-key-row-header { background: var(--surface); border-bottom: 1px solid var(--line-strong); min-height: 52px; }
+.th { font-size: 13px; font-weight: 600; color: var(--ink); }
+.th small { display: block; margin-top: 2px; font-size: 12px; font-weight: 400; color: var(--muted); }
+.center { text-align: center; }
+
+/* 계층별 행 */
+[class*="st-key-row-l0-"] { background: var(--row-total); color: #fff; font-weight: 700; font-size: 15px; }
+[class*="st-key-row-l1-"] { background: var(--row-division); color: var(--ink); font-weight: 600; }
+[class*="st-key-row-l2-"] { background: var(--row-product); color: var(--ink); font-weight: 500; }
+[class*="st-key-row-l3-"] { background: var(--surface); color: var(--ink-soft); }
+[class*="st-key-row-l3-"]:has(.badge-reviewed) { background: var(--reviewed-soft); }
+[class*="st-key-row-l1-"]:hover, [class*="st-key-row-l2-"]:hover, [class*="st-key-row-l3-"]:hover { box-shadow: inset 0 0 0 999px rgb(15 23 42 / 0.035); }
+[class*="st-key-row-l0-"] .neg { color: var(--negative-on-dark) !important; }
+[class*="st-key-row-l0-"] .empty { color: #94a3b8 !important; }
+
+/* 들여쓰기 (구분 열) */
+[class*="st-key-row-l1-"] [data-testid="stColumn"]:nth-child(2) { padding-left: 20px; }
+[class*="st-key-row-l2-"] [data-testid="stColumn"]:nth-child(2) { padding-left: 40px; }
+[class*="st-key-row-l3-"] [data-testid="stColumn"]:nth-child(2) { padding-left: 78px; }
+
+.nums { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; align-items: baseline; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* 긴 숫자는 잘라내지 않고 글자를 줄인다 (app.py value_class의 long·xlong) */
+.nums > .long { font-size: 0.88em; }
+.nums > .xlong { font-size: 0.78em; letter-spacing: -0.02em; }
+.name { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+
+/* 접기/펼치기 버튼은 이름처럼 보이게 */
+[class*="st-key-toggle-"] button { color: inherit !important; font-weight: inherit; padding: 0; min-height: 0; justify-content: flex-start; }
+[class*="st-key-toggle-"] button p { font-size: inherit; font-weight: inherit; }
+/* 관리 열: 수정·삭제 버튼을 한 줄로 */
+[class*="st-key-row-l3-"] [data-testid="stColumn"]:nth-child(4) [data-testid="stVerticalBlock"] { flex-direction: row; justify-content: center; gap: 4px; }
+[class*="st-key-row-l3-"] [data-testid="stColumn"]:nth-child(4) [data-testid="stElementContainer"] { width: auto !important; }
+/* 행 버튼 키는 edit-{id}·delete-{id}. 다이얼로그 버튼 키는 dlg-… 로 지어 이 규칙에 걸리지 않게 한다 */
+[class*="st-key-edit-"] button { color: var(--primary); padding: 0 4px; min-height: 0; }
+[class*="st-key-delete-"] button { color: var(--negative); padding: 0 4px; min-height: 0; }
+
+.badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 1px 8px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.badge-reviewed { background: rgb(22 101 52 / 0.1); color: var(--reviewed); }
+.badge-review { background: var(--review-soft); color: var(--review); }
+.badge-partial { background: var(--primary-soft); color: var(--primary); }
+
+/* ---------- 다이얼로그 ---------- */
+.dlg-path { margin-bottom: 0.5rem; color: var(--ink-soft); }
+.dlg-message { color: var(--ink-soft); line-height: 1.6; margin-bottom: 0.75rem; }
+.dlg-preview { padding: 10px 12px; border-radius: 8px; background: var(--primary-soft); color: var(--primary); font-variant-numeric: tabular-nums; }
+.dlg-preview .hint { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+.field-error { margin-top: -0.5rem; margin-bottom: 0.25rem; font-size: 12px; font-weight: 500; color: var(--negative); }
+.st-key-danger button { background: var(--danger); border-color: var(--danger); }
+.st-key-danger button:hover { background: var(--danger-hover); border-color: var(--danger-hover); }
+
+/* ---------- 실행 취소 배너 ---------- */
+.st-key-undo-banner {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 1000;
+  width: min(560px, calc(100vw - 2rem)); padding: 6px 8px 6px 16px;
+  border-radius: 10px; background: #0f172a; color: #fff; box-shadow: 0 10px 30px rgb(0 0 0 / 0.25);
+}
+.st-key-undo-banner button { color: #7dd3fc !important; font-weight: 600; }
